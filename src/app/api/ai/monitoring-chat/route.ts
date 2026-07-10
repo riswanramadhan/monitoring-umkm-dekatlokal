@@ -140,7 +140,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          "GEMINI_API_KEY belum ditemukan. Tambahkan GEMINI_API_KEY ke .env.local atau .env.example untuk mengaktifkan asisten analisa.",
+          "GEMINI_API_KEY belum ditemukan. Tambahkan GEMINI_API_KEY ke .env.local atau .env.example untuk mengaktifkan DEKAT AI.",
       },
       { status: 503 },
     );
@@ -174,7 +174,7 @@ export async function POST(request: Request) {
         parts: [
           {
             text: [
-              "Anda adalah asisten analisa data monitoring website UMKM DekatLokal.",
+              "Anda adalah DEKAT AI, asisten analisa data monitoring website UMKM DekatLokal.",
               "Jawab hanya berdasarkan konteks dashboard monitoring yang diberikan.",
               "Jika pertanyaan di luar dashboard ini, tolak secara singkat dan arahkan kembali ke insight monitoring.",
               "Jawab lengkap sampai pertanyaan benar-benar terjawab, tetapi tetap sederhana dan mudah dipahami.",
@@ -208,8 +208,7 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         error:
-          data?.error?.message ??
-          "Asisten analisa belum dapat memproses permintaan.",
+          data?.error?.message ?? "DEKAT AI belum dapat memproses permintaan.",
       },
       { status: response.status },
     );
@@ -224,6 +223,6 @@ export async function POST(request: Request) {
   return NextResponse.json({
     message:
       text ||
-      "Saya belum menemukan insight yang cukup dari konteks monitoring saat ini.",
+      "DEKAT AI belum menemukan insight yang cukup dari konteks monitoring saat ini.",
   });
 }

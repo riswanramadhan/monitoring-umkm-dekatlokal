@@ -74,10 +74,10 @@ function MiniKpi({
   numericDecimals?: number;
 }) {
   return (
-    <Card className="min-h-24">
-      <CardContent className="p-4">
+    <Card className="min-h-[124px]">
+      <CardContent className="p-5 sm:p-6">
         <p className="text-[13px] font-bold text-[#101828]">{label}</p>
-        <p className="mt-2 text-2xl leading-none font-semibold">
+        <p className="mt-3 text-2xl leading-none font-semibold">
           {typeof numericValue === "number" ? (
             <AnimatedMetricValue
               value={numericValue}
@@ -89,7 +89,7 @@ function MiniKpi({
           )}
         </p>
         {helper ? (
-          <p className="mt-1 text-xs text-[var(--text-secondary)]">{helper}</p>
+          <p className="mt-2 text-xs text-[var(--text-secondary)]">{helper}</p>
         ) : null}
       </CardContent>
     </Card>
@@ -666,7 +666,7 @@ function NotesTab({ detail }: { detail: WebsiteDetail }) {
       <div className="grid gap-3">
         {notes.map((note) => (
           <Card key={note.id}>
-            <CardContent className="p-4">
+            <CardContent className="p-5 sm:p-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">

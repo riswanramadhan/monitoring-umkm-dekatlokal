@@ -22,7 +22,7 @@ export function MonitoringOverviewDashboard({
   overview: MonitoringOverview;
 }) {
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         eyebrow="Superadmin"
         title="Monitoring Website UMKM"
@@ -48,7 +48,7 @@ export function MonitoringOverviewDashboard({
         previousData={overview.previousDailyTrends}
       />
 
-      <div className="grid gap-4 xl:grid-cols-12">
+      <div className="grid gap-5 xl:grid-cols-12">
         <div className="xl:col-span-7">
           <WebsiteRanking websites={overview.websites} />
         </div>

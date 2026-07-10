@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -71,7 +70,7 @@ export function DashboardHeader({
             >
               <Bell className="size-5" />
               {notifications.count > 0 ? (
-                <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-[#DC2626] text-[9px] font-bold text-white">
+                <span className="dekat-notification-badge absolute top-1.5 right-1.5 flex size-4 items-center justify-center rounded-full bg-[#DC2626] text-[9px] font-bold text-white ring-2 ring-white">
                   {Math.min(notifications.count, 9)}
                 </span>
               ) : null}
@@ -130,13 +129,14 @@ export function DashboardHeader({
               <p className="truncate text-xs text-[#667085]">{session.email}</p>
             </div>
             <DropdownMenuSeparator />
-            <form action={logoutAction}>
-              <DropdownMenuItem asChild>
-                <button type="submit" className="w-full">
-                  <LogOut />
-                  Keluar
-                </button>
-              </DropdownMenuItem>
+            <form action={logoutAction} className="w-full">
+              <button
+                type="submit"
+                className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm text-[#344054] outline-none hover:bg-[var(--surface-muted)] focus:bg-[var(--surface-muted)] [&_svg]:size-4"
+              >
+                <LogOut />
+                Keluar
+              </button>
             </form>
           </DropdownMenuContent>
         </DropdownMenu>

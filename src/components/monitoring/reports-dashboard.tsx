@@ -105,7 +105,7 @@ export function ReportsDashboard({
   );
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         eyebrow="Monitoring"
         title="Laporan"
@@ -121,33 +121,33 @@ export function ReportsDashboard({
         }
       />
 
-      <div className="grid items-stretch gap-3 sm:grid-cols-3">
-        <Card className="h-full min-h-[86px]">
-          <CardContent className="h-full p-4">
+      <div className="grid items-stretch gap-4 sm:grid-cols-3">
+        <Card className="h-full min-h-[112px]">
+          <CardContent className="h-full p-5 sm:p-6">
             <p className="text-[13px] font-bold text-[#101828]">
               Total Website
             </p>
-            <p className="mt-2 text-2xl leading-none font-semibold">
+            <p className="mt-3 text-2xl leading-none font-semibold">
               <AnimatedMetricValue value={websites.length} />
             </p>
           </CardContent>
         </Card>
-        <Card className="h-full min-h-[86px]">
-          <CardContent className="h-full p-4">
+        <Card className="h-full min-h-[112px]">
+          <CardContent className="h-full p-5 sm:p-6">
             <p className="text-[13px] font-bold text-[#101828]">
               Kunjungan Google
             </p>
-            <p className="mt-2 text-2xl leading-none font-semibold">
+            <p className="mt-3 text-2xl leading-none font-semibold">
               <AnimatedMetricValue value={totals.google} format="compact" />
             </p>
           </CardContent>
         </Card>
-        <Card className="h-full min-h-[86px]">
-          <CardContent className="h-full p-4">
+        <Card className="h-full min-h-[112px]">
+          <CardContent className="h-full p-5 sm:p-6">
             <p className="text-[13px] font-bold text-[#101828]">
               Klik WhatsApp
             </p>
-            <p className="mt-2 text-2xl leading-none font-semibold">
+            <p className="mt-3 text-2xl leading-none font-semibold">
               <AnimatedMetricValue value={totals.whatsapp} format="compact" />
             </p>
           </CardContent>

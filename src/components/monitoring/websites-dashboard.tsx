@@ -26,16 +26,18 @@ function StatCard({
   icon: LucideIcon;
 }) {
   return (
-    <Card className="h-full min-h-[96px]">
-      <CardContent className="h-full p-4">
-        <div className="flex items-start justify-between gap-4">
+    <Card className="h-full min-h-[124px]">
+      <CardContent className="h-full p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-5">
           <div>
             <p className="text-[13px] font-bold text-[#101828]">{label}</p>
-            <p className="mt-2 text-2xl leading-none font-semibold">
+            <p className="mt-3 text-2xl leading-none font-semibold">
               <AnimatedMetricValue value={value} />
             </p>
           </div>
-          <Icon className="size-[22px] text-[var(--brand-primary)]" />
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-[14px] bg-[var(--brand-primary-soft)] text-[var(--brand-primary)] shadow-[inset_0_1px_0_rgba(255,255,255,.78)]">
+            <Icon className="size-[22px]" />
+          </span>
         </div>
       </CardContent>
     </Card>
@@ -62,7 +64,7 @@ export function WebsitesDashboard({
   const live = websites.length;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <PageHeader
         eyebrow="Monitoring"
         title="Website UMKM"
@@ -74,7 +76,7 @@ export function WebsitesDashboard({
           </>
         }
       />
-      <div className="grid items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="Jumlah website"
           value={websites.length}

@@ -37,25 +37,25 @@ const iconMap = {
 };
 
 const tones = {
-  blue: "text-[#0255F5]",
-  green: "text-[#16A34A]",
-  amber: "text-[#D97706]",
-  red: "text-[#DC2626]",
+  blue: "bg-[#EAF1FF] text-[#0255F5]",
+  green: "bg-[#EAF8EF] text-[#16A34A]",
+  amber: "bg-[#FFF7E8] text-[#D97706]",
+  red: "bg-[#FDECEC] text-[#DC2626]",
 };
 
 export function DashboardKpiGrid({ kpis }: { kpis: MonitoringKpi[] }) {
   return (
     <TooltipProvider>
-      <div className="grid items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((kpi) => {
           const Icon = iconMap[kpi.iconKey];
           const positive = (kpi.changePercentage ?? 0) >= 0;
           return (
-            <Card key={kpi.id} className="h-full min-h-[104px]">
-              <CardContent className="h-full p-4">
-                <div className="flex items-start justify-between gap-4">
+            <Card key={kpi.id} className="h-full min-h-[132px]">
+              <CardContent className="h-full p-5 sm:p-6">
+                <div className="flex items-start justify-between gap-5">
                   <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-2">
                       <p className="truncate text-[13px] font-bold text-[#101828]">
                         {kpi.label}
                       </p>
@@ -78,7 +78,7 @@ export function DashboardKpiGrid({ kpis }: { kpis: MonitoringKpi[] }) {
                     </div>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <p className="mt-2 text-[26px] leading-none font-semibold tracking-tight text-[var(--text-primary)]">
+                        <p className="mt-3 text-[28px] leading-none font-semibold tracking-tight text-[var(--text-primary)]">
                           {typeof kpi.numericValue === "number" ? (
                             <AnimatedMetricValue
                               value={kpi.numericValue}
@@ -92,7 +92,7 @@ export function DashboardKpiGrid({ kpis }: { kpis: MonitoringKpi[] }) {
                       </TooltipTrigger>
                       <TooltipContent>{kpi.fullValue}</TooltipContent>
                     </Tooltip>
-                    <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
+                    <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
                       {typeof kpi.changePercentage === "number" ? (
                         <span
                           className={cn(
@@ -113,7 +113,12 @@ export function DashboardKpiGrid({ kpis }: { kpis: MonitoringKpi[] }) {
                       ) : null}
                     </div>
                   </div>
-                  <div className={tones[kpi.tone ?? "blue"]}>
+                  <div
+                    className={cn(
+                      "flex size-10 shrink-0 items-center justify-center rounded-[14px] shadow-[inset_0_1px_0_rgba(255,255,255,.78)]",
+                      tones[kpi.tone ?? "blue"],
+                    )}
+                  >
                     <Icon className="size-[22px]" strokeWidth={2.2} />
                   </div>
                 </div>
