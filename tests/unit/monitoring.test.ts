@@ -65,6 +65,20 @@ describe("monitoring operational data", () => {
     ).toBe("Gowa");
   });
 
+  it("keeps UMKM locations scoped to Makassar except the Gowa list", () => {
+    const gowaSlugs = new Set([
+      "kareppe-crunch",
+      "gingerfitplus",
+      "rumah-keripik",
+      "bakpia-malino",
+    ]);
+    websiteSeeds.forEach((seed) => {
+      expect(seed.location).toBe(
+        gowaSlugs.has(seed.slug) ? "Gowa" : "Makassar",
+      );
+    });
+  });
+
   it("keeps derived landing page traffic conservative", () => {
     websiteSeeds.forEach((seed) => {
       const metrics = aggregateDailyTrends(generateWebsiteDailyTrends(seed));

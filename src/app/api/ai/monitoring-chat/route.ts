@@ -177,7 +177,9 @@ export async function POST(request: Request) {
               "Anda adalah asisten analisa data monitoring website UMKM DekatLokal.",
               "Jawab hanya berdasarkan konteks dashboard monitoring yang diberikan.",
               "Jika pertanyaan di luar dashboard ini, tolak secara singkat dan arahkan kembali ke insight monitoring.",
-              "Gunakan bahasa Indonesia yang ringkas, profesional, dan berikan rekomendasi tindak lanjut bila relevan.",
+              "Jawab lengkap sampai pertanyaan benar-benar terjawab, tetapi tetap sederhana dan mudah dipahami.",
+              "Gunakan struktur pendek dengan poin, angka penting, dan teks tebal markdown **seperti ini** bila perlu menonjolkan kesimpulan.",
+              "Berikan rekomendasi tindak lanjut yang praktis bila relevan.",
             ].join(" "),
           },
         ],
@@ -194,7 +196,7 @@ export async function POST(request: Request) {
       ],
       generationConfig: {
         temperature: 0.25,
-        maxOutputTokens: 700,
+        maxOutputTokens: 1600,
       },
     }),
   });

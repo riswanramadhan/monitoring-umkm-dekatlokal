@@ -19,6 +19,7 @@ import { Breadcrumb } from "./navigation";
 import { MobileNavigation } from "./mobile-navigation";
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { BrandMark } from "@/components/brand/logo";
+import { RealtimeClock } from "@/components/monitoring/realtime-clock";
 
 interface NotificationData {
   count: number;
@@ -43,8 +44,9 @@ export function DashboardHeader({
     <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-white/95 backdrop-blur">
       <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
         <MobileNavigation />
-        <div className="hidden min-w-0 flex-1 md:block">
+        <div className="hidden min-w-0 flex-1 items-center gap-3 md:flex">
           <Breadcrumb />
+          <RealtimeClock compact />
         </div>
         <form
           action="/dashboard/websites"

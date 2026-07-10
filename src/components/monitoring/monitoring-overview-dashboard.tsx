@@ -7,7 +7,6 @@ import {
 } from "@/components/monitoring/date-range-selector";
 import { DashboardKpiGrid } from "@/components/monitoring/dashboard-kpi";
 import { PerformanceChart } from "@/components/monitoring/performance-chart";
-import { RealtimeClock } from "@/components/monitoring/realtime-clock";
 import { SearchPerformance } from "@/components/monitoring/search-performance";
 import { TrafficSourceChart } from "@/components/monitoring/traffic-source-chart";
 import { WebsiteHealth } from "@/components/monitoring/website-health";
@@ -30,7 +29,6 @@ export function MonitoringOverviewDashboard({
         description="Pantau visibilitas, traffic, konversi, dan kondisi seluruh website UMKM dalam satu dashboard."
         actions={
           <>
-            <RealtimeClock />
             <DateRangeSelector range={overview.range} basePath="/dashboard" />
             <Button asChild variant="outline">
               <Link href="/dashboard/reports">

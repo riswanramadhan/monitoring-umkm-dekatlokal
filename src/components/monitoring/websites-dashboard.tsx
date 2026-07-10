@@ -26,8 +26,8 @@ function StatCard({
   icon: LucideIcon;
 }) {
   return (
-    <Card className="min-h-24">
-      <CardContent className="p-4 sm:p-[18px]">
+    <Card className="h-full min-h-[96px]">
+      <CardContent className="h-full p-4">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-[13px] font-bold text-[#101828]">{label}</p>
@@ -74,7 +74,7 @@ export function WebsitesDashboard({
           </>
         }
       />
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="Jumlah website"
           value={websites.length}

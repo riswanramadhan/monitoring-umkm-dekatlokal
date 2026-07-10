@@ -202,13 +202,78 @@ function dailyPoint(
   };
 }
 
+function withWhatsappMetrics(seed: LocalWebsiteSeed, points: DailyTrendPoint[]) {
+  const activePoints = points
+    .map((point, index) => ({ point, index }))
+    .filter(
+      ({ point }) =>
+        point.date >= seed.googleIndexedAt &&
+        point.date <= MOCK_TODAY &&
+        point.uniqueVisitors > 0,
+    );
+  if (!activePoints.length) return points;
+
+  const phase = seedPhase(seed);
+  const visitors = activePoints.reduce(
+    (total, { point }) => total + point.uniqueVisitors,
+    0,
+  );
+  const clickLimit = Math.ceil(visitors * 0.056);
+  const desiredUniqueClickers = Math.max(
+    seed.googleVisitsTotal > 0 ? 1 : 0,
+    Math.round(visitors * Math.min(seed.whatsappConversion * 0.72, 0.048)),
+  );
+  const uniqueClickersTotal = Math.min(desiredUniqueClickers, clickLimit);
+  const clicksTotal = Math.min(
+    clickLimit,
+    Math.max(
+      uniqueClickersTotal,
+      Math.round(uniqueClickersTotal * (1.04 + (phase % 3) * 0.02)),
+    ),
+  );
+  const weights = activePoints.map(({ point }, index) => {
+    const rhythm = 1 + Math.sin((index + phase) / 6) * 0.08;
+    return Math.max(
+      0.1,
+      (point.organicClicks * 1.5 + point.uniqueVisitors * 0.24) * rhythm,
+    );
+  });
+  const uniqueByDay = allocateIntegerTotal(weights, uniqueClickersTotal);
+  const extraClicksByDay = allocateIntegerTotal(
+    weights,
+    Math.max(0, clicksTotal - uniqueClickersTotal),
+  );
+  const next = points.map((point) => ({
+    ...point,
+    whatsappClicks: 0,
+    uniqueWhatsappClickers: 0,
+  }));
+
+  activePoints.forEach(({ point, index }, allocationIndex) => {
+    const uniqueClickers = Math.min(
+      point.uniqueVisitors,
+      uniqueByDay[allocationIndex] ?? 0,
+    );
+    const extraClicks = uniqueClickers
+      ? (extraClicksByDay[allocationIndex] ?? 0)
+      : 0;
+    next[index] = {
+      ...(next[index] ?? point),
+      uniqueWhatsappClickers: uniqueClickers,
+      whatsappClicks: uniqueClickers + extraClicks,
+    };
+  });
+
+  return next;
+}
+
 export function generateWebsiteDailyTrends(seed: LocalWebsiteSeed, days = 760) {
   const from = addDays(MOCK_TODAY, -(days - 1));
   const dates = createDateSeries(from, MOCK_TODAY);
   const monthly = getMonthlyGoogleVisits(seed);
   const organicByDate = allocateDailyOrganicClicks(seed, dates, monthly);
   const monthlyAverage = buildMonthlyAverageMap(seed, monthly);
-  return dates.map((date, index) =>
+  const points = dates.map((date, index) =>
     dailyPoint(
       seed,
       date,
@@ -217,6 +282,7 @@ export function generateWebsiteDailyTrends(seed: LocalWebsiteSeed, days = 760) {
       monthlyAverage.get(monthKey(date)) ?? 0,
     ),
   );
+  return withWhatsappMetrics(seed, points);
 }
 
 export function aggregateDailyByDate(

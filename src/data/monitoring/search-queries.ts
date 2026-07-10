@@ -23,7 +23,7 @@ export const searchQuerySeeds: SearchQuerySeed[] = [
   },
   {
     websiteSlug: "bio-atama",
-    query: "pupuk organik gowa",
+    query: "produk organik bio atama",
     share: 0.24,
     positionOffset: -0.5,
     trendBias: -3,
@@ -79,7 +79,7 @@ export const searchQuerySeeds: SearchQuerySeed[] = [
   },
   {
     websiteSlug: "eyfa-natural-oil",
-    query: "natural oil gowa",
+    query: "natural oil makassar",
     share: 0.24,
     positionOffset: -0.2,
     trendBias: 6,
@@ -93,7 +93,7 @@ export const searchQuerySeeds: SearchQuerySeed[] = [
   },
   {
     websiteSlug: "mulkan-mimbaun",
-    query: "produk herbal gowa",
+    query: "produk herbal makassar",
     share: 0.25,
     positionOffset: 1.8,
     trendBias: -8,
@@ -114,14 +114,14 @@ export const searchQuerySeeds: SearchQuerySeed[] = [
   },
   {
     websiteSlug: "kareppe-crunch",
-    query: "kareppe crunch makassar",
+    query: "kareppe crunch gowa",
     share: 0.26,
     positionOffset: -0.7,
     trendBias: 5,
   },
   {
     websiteSlug: "gingerfitplus",
-    query: "gingershot makassar",
+    query: "gingershot gowa",
     share: 0.33,
     positionOffset: -1.4,
     trendBias: 12,
@@ -149,14 +149,14 @@ export const searchQuerySeeds: SearchQuerySeed[] = [
   },
   {
     websiteSlug: "dapur-karaeng",
-    query: "dapur karaeng gowa",
+    query: "dapur karaeng makassar",
     share: 0.23,
     positionOffset: 0.4,
     trendBias: 5,
   },
   {
     websiteSlug: "dapur-karaeng",
-    query: "kuliner rumahan gowa",
+    query: "kuliner rumahan makassar",
     share: 0.18,
     positionOffset: 1.2,
     trendBias: 3,

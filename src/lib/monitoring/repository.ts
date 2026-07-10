@@ -666,13 +666,12 @@ function buildPerformanceHistory(
     });
 }
 
-function provinceForLocation(location: string) {
-  if (location === "Majene") return "Sulawesi Barat";
+function provinceForLocation() {
   return "Sulawesi Selatan";
 }
 
 function buildVisitorLocations(website: WebsiteMonitoringItem) {
-  const primary = provinceForLocation(website.location);
+  const primary = provinceForLocation();
   const rows = [
     { location: primary, share: 0.7 },
     {

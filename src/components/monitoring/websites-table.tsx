@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import { WebsiteLogo } from "@/components/monitoring/website-avatar";
+import { StatusBadge } from "@/components/monitoring/status-badge";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -91,18 +92,6 @@ const sortOptions: Array<{ value: SortKey; label: string }> = [
   { value: "name", label: "Nama A-Z" },
   { value: "health", label: "Health score tertinggi" },
 ];
-
-function statusLabel(status: WebsiteStatus) {
-  if (status === "attention") return "Perlu perhatian";
-  if (status === "critical") return "Bermasalah";
-  return "Live";
-}
-
-function statusVariant(status: WebsiteStatus) {
-  if (status === "attention") return "warning" as const;
-  if (status === "critical") return "danger" as const;
-  return "success" as const;
-}
 
 function typeLabel(type: WebsiteType) {
   return type === "sociopreneur" ? "Sociopreneur" : "UMKM";
@@ -224,9 +213,7 @@ function WebsiteCard({ website }: { website: WebsiteMonitoringItem }) {
             <p className="truncate text-xs text-[#667085]">{website.domain}</p>
           </div>
         </div>
-        <Badge variant={statusVariant(website.status)}>
-          {statusLabel(website.status)}
-        </Badge>
+        <StatusBadge status={website.status} />
       </div>
       <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
         <Metric
@@ -414,11 +401,7 @@ export function WebsitesTable({
       id: "status",
       label: "Status",
       header: "Status",
-      cell: (website) => (
-        <Badge variant={statusVariant(website.status)}>
-          {statusLabel(website.status)}
-        </Badge>
-      ),
+      cell: (website) => <StatusBadge status={website.status} />,
     },
     {
       id: "type",

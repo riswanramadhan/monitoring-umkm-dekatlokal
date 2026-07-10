@@ -46,13 +46,13 @@ const tones = {
 export function DashboardKpiGrid({ kpis }: { kpis: MonitoringKpi[] }) {
   return (
     <TooltipProvider>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid items-stretch gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((kpi) => {
           const Icon = iconMap[kpi.iconKey];
           const positive = (kpi.changePercentage ?? 0) >= 0;
           return (
-            <Card key={kpi.id} className="min-h-28">
-              <CardContent className="p-4 sm:p-[18px]">
+            <Card key={kpi.id} className="h-full min-h-[104px]">
+              <CardContent className="h-full p-4">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
@@ -78,7 +78,7 @@ export function DashboardKpiGrid({ kpis }: { kpis: MonitoringKpi[] }) {
                     </div>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <p className="mt-2 text-[28px] leading-none font-semibold tracking-tight text-[var(--text-primary)]">
+                        <p className="mt-2 text-[26px] leading-none font-semibold tracking-tight text-[var(--text-primary)]">
                           {typeof kpi.numericValue === "number" ? (
                             <AnimatedMetricValue
                               value={kpi.numericValue}

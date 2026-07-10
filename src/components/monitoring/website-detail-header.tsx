@@ -2,24 +2,13 @@ import Link from "next/link";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 import { WebsiteLogo } from "@/components/monitoring/website-avatar";
+import { StatusBadge } from "@/components/monitoring/status-badge";
 import { DateRangeSelector } from "@/components/monitoring/date-range-selector";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDateIndonesia } from "@/lib/monitoring/formatters";
-import type { WebsiteDetail, WebsiteStatus } from "@/types/monitoring";
-
-function statusLabel(status: WebsiteStatus) {
-  if (status === "attention") return "Perlu perhatian";
-  if (status === "critical") return "Bermasalah";
-  return "Live";
-}
-
-function statusVariant(status: WebsiteStatus) {
-  if (status === "attention") return "warning" as const;
-  if (status === "critical") return "danger" as const;
-  return "success" as const;
-}
+import type { WebsiteDetail } from "@/types/monitoring";
 
 export function WebsiteDetailHeader({ detail }: { detail: WebsiteDetail }) {
   const href = detail.domain ? `https://${detail.domain}` : null;
@@ -44,9 +33,7 @@ export function WebsiteDetailHeader({ detail }: { detail: WebsiteDetail }) {
                   <h1 className="max-w-full text-2xl font-semibold break-words">
                     {detail.name}
                   </h1>
-                  <Badge variant={statusVariant(detail.status)}>
-                    {statusLabel(detail.status)}
-                  </Badge>
+                  <StatusBadge status={detail.status} />
                 </div>
                 <p className="mt-1 text-sm break-words text-[var(--text-secondary)]">
                   {detail.domain}

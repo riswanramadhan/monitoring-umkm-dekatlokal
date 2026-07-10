@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { Bot, Send, Sparkles, X } from "lucide-react";
+import { Bot, Send, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,8 +13,134 @@ type ChatMessage = {
   content: string;
 };
 
+function RobotMark({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn(
+        "relative flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#0255F5_0%,#4D8DFF_55%,#0FBA81_100%)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,.55),0_10px_22px_rgba(2,85,245,.24)]",
+        className,
+      )}
+    >
+      <span className="absolute inset-1 rounded-[14px] bg-white/18" />
+      <Bot className="relative size-5" strokeWidth={2.4} />
+      <span className="absolute right-1.5 bottom-1.5 size-2 rounded-full bg-[#22C55E] ring-2 ring-white" />
+    </span>
+  );
+}
+
+function renderInline(content: string) {
+  const pieces = content.split(/(\*\*[^*]+\*\*)/g);
+  return pieces.map((piece, index) => {
+    const bold = piece.startsWith("**") && piece.endsWith("**");
+    if (!bold) return <span key={`${piece}-${index}`}>{piece}</span>;
+    return (
+      <strong key={`${piece}-${index}`} className="font-bold text-inherit">
+        {piece.slice(2, -2)}
+      </strong>
+    );
+  });
+}
+
+function FormattedMessage({ content }: { content: string }) {
+  const blocks = useMemo(() => {
+    const groups: Array<{
+      type: "paragraph" | "bullets" | "numbers";
+      lines: string[];
+    }> = [];
+    let current:
+      | {
+          type: "paragraph" | "bullets" | "numbers";
+          lines: string[];
+        }
+      | null = null;
+
+    function pushCurrent() {
+      if (current && current.lines.length) groups.push(current);
+      current = null;
+    }
+
+    content
+      .trim()
+      .split(/\r?\n/)
+      .forEach((rawLine) => {
+        const line = rawLine.trimEnd();
+        const trimmed = line.trim();
+        if (!trimmed) {
+          pushCurrent();
+          return;
+        }
+
+        const type = /^[-*]\s+/.test(trimmed)
+          ? "bullets"
+          : /^\d+[.)]\s+/.test(trimmed)
+            ? "numbers"
+            : "paragraph";
+        const value =
+          type === "bullets"
+            ? trimmed.replace(/^[-*]\s+/, "")
+            : type === "numbers"
+              ? trimmed.replace(/^\d+[.)]\s+/, "")
+              : trimmed;
+
+        if (!current || current.type !== type) {
+          pushCurrent();
+          current = { type, lines: [] };
+        }
+        current.lines.push(value);
+      });
+    pushCurrent();
+
+    return groups;
+  }, [content]);
+
+  if (!blocks.length) return null;
+
+  return (
+    <div className="space-y-2 break-words [overflow-wrap:anywhere]">
+      {blocks.map((block, index) => {
+        if (block.type === "bullets") {
+          return (
+            <ul
+              key={`${block.type}-${index}`}
+              className="list-disc space-y-1 pl-4"
+            >
+              {block.lines.map((line, lineIndex) => (
+                <li key={`${line}-${lineIndex}`}>{renderInline(line)}</li>
+              ))}
+            </ul>
+          );
+        }
+        if (block.type === "numbers") {
+          return (
+            <ol
+              key={`${block.type}-${index}`}
+              className="list-decimal space-y-1 pl-4"
+            >
+              {block.lines.map((line, lineIndex) => (
+                <li key={`${line}-${lineIndex}`}>{renderInline(line)}</li>
+              ))}
+            </ol>
+          );
+        }
+        return (
+          <p key={`${block.type}-${index}`}>
+            {block.lines.reduce<ReactNode[]>((nodes, line, lineIndex) => {
+              if (lineIndex) nodes.push(<br key={`br-${lineIndex}`} />);
+              nodes.push(
+                <span key={`${line}-${lineIndex}`}>{renderInline(line)}</span>,
+              );
+              return nodes;
+            }, [])}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
 export function MonitoringAiChat() {
   const pathname = usePathname();
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +156,11 @@ export function MonitoringAiChat() {
     () => input.trim().length > 0 && !loading,
     [input, loading],
   );
+
+  useEffect(() => {
+    if (!open) return;
+    messagesEndRef.current?.scrollIntoView({ block: "end" });
+  }, [messages, loading, open]);
 
   async function sendMessage() {
     const content = input.trim();
@@ -92,15 +223,12 @@ export function MonitoringAiChat() {
     <div className="fixed right-4 bottom-4 z-50 flex flex-col items-end gap-3">
       {open ? (
         <section
-          className="w-[min(calc(100vw-2rem),390px)] overflow-hidden rounded-[26px] border border-white/70 bg-white/95 shadow-[0_24px_70px_rgba(16,24,40,.22)] backdrop-blur-xl"
+          className="w-[min(calc(100vw-2rem),440px)] overflow-hidden rounded-[26px] border border-white/70 bg-white/95 shadow-[0_24px_70px_rgba(16,24,40,.22)] backdrop-blur-xl"
           aria-label="Asisten analisa data monitoring"
         >
           <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] bg-[linear-gradient(180deg,#FFFFFF_0%,#F8FAFF_100%)] px-4 py-3.5">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="relative flex size-10 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,#0B63F6_0%,#6AA6FF_48%,#0FBA81_100%)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,.5),0_10px_22px_rgba(2,85,245,.26)]">
-                <div className="absolute inset-1 rounded-[14px] bg-white/20" />
-                <Sparkles className="relative size-5 drop-shadow-sm" />
-              </div>
+              <RobotMark />
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <h2 className="truncate text-sm font-semibold text-[#101828]">
@@ -123,18 +251,18 @@ export function MonitoringAiChat() {
               <X />
             </Button>
           </div>
-          <div className="max-h-[380px] space-y-3 overflow-y-auto bg-[#F6F8FB] p-3.5">
+          <div className="max-h-[min(68vh,560px)] space-y-3 overflow-y-auto bg-[#F6F8FB] p-3.5">
             {messages.map((message, index) => (
               <div
                 key={`${message.role}-${index}`}
                 className={cn(
-                  "max-w-[86%] rounded-[20px] px-3.5 py-2.5 text-sm leading-relaxed shadow-sm",
+                  "max-w-[92%] rounded-[20px] px-3.5 py-2.5 text-sm leading-relaxed shadow-sm",
                   message.role === "user"
                     ? "ml-auto rounded-br-md bg-[var(--brand-primary)] text-white"
                     : "mr-auto rounded-bl-md border border-white bg-white text-[#344054]",
                 )}
               >
-                {message.content}
+                <FormattedMessage content={message.content} />
               </div>
             ))}
             {loading ? (
@@ -150,6 +278,7 @@ export function MonitoringAiChat() {
                 </span>
               </div>
             ) : null}
+            <div ref={messagesEndRef} />
           </div>
           <div className="border-t border-[var(--border)] p-3">
             <div className="flex items-end gap-2">
@@ -183,13 +312,12 @@ export function MonitoringAiChat() {
       <Button
         type="button"
         size="icon"
-        className="group relative size-14 overflow-hidden rounded-[22px] border border-white/60 bg-[linear-gradient(145deg,#075FF7_0%,#5EA1FF_45%,#11A37F_100%)] shadow-[0_18px_44px_rgba(2,85,245,.34)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_22px_54px_rgba(2,85,245,.42)]"
+        className="group relative size-14 overflow-visible rounded-[22px] border border-white/60 bg-white p-0 shadow-[0_18px_44px_rgba(2,85,245,.34)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_22px_54px_rgba(2,85,245,.42)]"
         aria-label="Buka asisten analisa"
         onClick={() => setOpen((value) => !value)}
       >
-        <span className="absolute inset-1 rounded-[18px] bg-white/16" />
-        <span className="absolute -top-3 left-2 h-8 w-10 rounded-full bg-white/35 blur-sm transition-transform group-hover:translate-x-2" />
-        <Sparkles className="relative size-6 text-white drop-shadow-sm" />
+        <span className="absolute right-2 bottom-1 size-3 rotate-45 rounded-[3px] bg-[#0FBA81]" />
+        <RobotMark className="size-14 rounded-[22px]" />
       </Button>
     </div>
   );

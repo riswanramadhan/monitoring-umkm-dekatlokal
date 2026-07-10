@@ -121,9 +121,9 @@ export function ReportsDashboard({
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <Card>
-          <CardContent className="p-4">
+      <div className="grid items-stretch gap-3 sm:grid-cols-3">
+        <Card className="h-full min-h-[86px]">
+          <CardContent className="h-full p-4">
             <p className="text-[13px] font-bold text-[#101828]">
               Total Website
             </p>
@@ -132,8 +132,8 @@ export function ReportsDashboard({
             </p>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4">
+        <Card className="h-full min-h-[86px]">
+          <CardContent className="h-full p-4">
             <p className="text-[13px] font-bold text-[#101828]">
               Kunjungan Google
             </p>
@@ -142,8 +142,8 @@ export function ReportsDashboard({
             </p>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4">
+        <Card className="h-full min-h-[86px]">
+          <CardContent className="h-full p-4">
             <p className="text-[13px] font-bold text-[#101828]">
               Klik WhatsApp
             </p>

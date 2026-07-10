@@ -19,7 +19,7 @@ const timeFormatter = new Intl.DateTimeFormat("id-ID", {
   timeZone: "Asia/Makassar",
 });
 
-export function RealtimeClock() {
+export function RealtimeClock({ compact = false }: { compact?: boolean }) {
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -31,7 +31,9 @@ export function RealtimeClock() {
     <div className="inline-flex min-h-10 max-w-full items-center gap-2 rounded-[var(--radius-control)] border border-[var(--border-strong)] bg-white px-3 text-sm text-[#344054] shadow-sm">
       <Clock3 className="size-4 shrink-0 text-[var(--brand-primary)]" />
       <span className="min-w-0 truncate" suppressHydrationWarning>
-        {`${dateFormatter.format(now)} • ${timeFormatter.format(now)} WITA`}
+        {compact
+          ? `${timeFormatter.format(now)} WITA`
+          : `${dateFormatter.format(now)} - ${timeFormatter.format(now)} WITA`}
       </span>
     </div>
   );
